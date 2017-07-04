@@ -1,0 +1,225 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!-- <link rel="Bookmark" href="/favicon.ico" > -->
+    <!-- <link rel="Shortcut Icon" href="/favicon.ico" /> -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <!-- Bootstrap core CSS -->
+    <link href="/static/zwb/admin/css/bootstrap.min.css" rel="stylesheet">
+    <!-- h-ui -->
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui.admin/css/style.css"/>
+    <!--[if IE 6]>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>用户列表</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 用户管理 <span
+        class="c-gray en">&gt;</span> 用户列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="text-c">
+        <form action="{:url('admin/user/search')}" method="get">
+            <input type="text" class="input-text" style="width:250px" placeholder="输入用户名称" name="search" required>
+            <button type="submit" class="btn btn-success" name=""><i class="Hui-iconfont">&#xe665;</i> 搜用户</button>
+        </form>
+    </div>
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <span class="r">共有数据：<strong>{$user_count}</strong> 条</span>
+    </div>
+    <table class="table table-border table-bordered table-bg">
+        <thead>
+        <tr>
+            <th scope="col" colspan="9">用户列表</th>
+        </tr>
+        <tr class="text-c">
+            <th>ID</th>
+            <th>手机</th>
+            <th>加入时间</th>
+            <th>状态</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {foreach ($res as $v) }
+        {if ($res)}
+        <tr class="text-c">
+            <!--<td><input type="checkbox" value="1" name=""></td>-->
+            <td>{$v['uid']}</td>
+            <td>{$v['tel']}</td>
+            <td>{$v['regtime'] | date='Y-m-d H:i', ###}</td>
+            <!--<td>admin@mail.com</td>-->
+            <td class="td-status"><a href="{:url('admin/user/stop?id='.$v['uid'])}">{$v['status'] == 1?'已启用':'已拉黑';}</a></td>
+            <td class="td-manage">
+                <button data-id="{$v['uid']}" class="btn btn-primary btn-xs show-btn" data-toggle="modal" data-target="#myModal">查看信息</button>
+
+            </td>
+        </tr>
+        {else}
+        <tr class="text-c" colspan="6"></tr>
+        {/else}
+        {/if}
+        {/foreach}
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        {$page}
+    </nav>
+
+    <!-- Modal -->
+    <!-- Modal -->
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="myModalLabel">
+                        用户[<u></u>]
+                    </h4>
+                </div>
+                <div class="modal-body">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <img src="" width="70" id="myimg">
+                        </div>
+                        <div class="col-md-9">
+                            <h4></h4>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-priamy" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<script src="/static/zwb/admin/js/jquery.min.js"></script>
+<script src="/static/zwb/admin/js/bootstrap.min.js"></script>
+<script src="/static/zwb/admin/js/toastr.min.js"></script>
+
+<script type="text/javascript" src="/static/zwb/admin/layer/2.4/layer.js"></script>
+<script type="text/javascript" src="/static/zwb/admin/datatables/1.10.0/jquery.dataTables.min.js"></script>
+
+<script type="text/javascript">
+    $(function () {
+        $('.table-sort').dataTable({
+            "aaSorting": [[1, "desc"]],//默认第几个排序
+            "bStateSave": true,//状态保存
+            "aoColumnDefs": [
+                //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+                {"orderable": false, "aTargets": [0, 8, 9]}// 制定列不参与排序
+            ]
+        });
+
+    });
+
+
+    /*用户-编辑*/
+    function member_edit(title, url, id, w, h) {
+        layer_show(title, url, w, h);
+    }
+
+
+    // 设置弹框参数
+    toastr.options = {
+        closeButton: true,//是否显示关闭按钮
+        progressBar: true,//实现显示计时条
+        timeOut: "3000",//自动关闭时间
+        positionClass: "toast-bottom-left",//提示位置
+        // toast-top-full-width 顶端，宽度铺满整个屏幕
+        // toast-top-right  顶端右边
+    };
+
+    $(function () {
+
+        // 触发查询单条用户
+        $('.show-btn').click(function () {
+            var ac_id = $(this).attr('data-id');
+            console.log('查看单条数据,UID为:', ac_id);
+            showAjax(ac_id); //AJAX查询
+        })
+
+    // 执行AJAX 查询单条数据
+    function showAjax(id){
+        $.ajax({
+            type: 'get',
+            url: 'read?id='+id,
+            dateType: 'json',
+            success:function (data){
+                console.log(data);
+                if (data.status) {
+                    // 填充信息
+                    $('.modal-title u').html(data.title);
+
+                    var myimg = document.getElementById('myimg');
+                    myimg.getAttributeNode('src').nodeValue=data.datas.icon;
+
+                    var msg = '邮箱:'+data.datas.email+'<br>'+'昵称:'+data.datas.nickname+'<br>'+'性别:'+(data.datas.sex == 0?'女':'男');
+                    $('.modal-body h4').html(msg);
+
+                } else {
+
+                }
+            },
+            error: function () {
+                // AJAX执行失败
+                alert('ajax操作失败');
+            }
+        });
+    }
+
+    });
+    /*
+        用户删除
+    */
+    $(function () {
+        $('.del-btn').click(function () {
+
+            var a_id = $(this).attr('data-id');
+            var obj = $(this).parents('tr');
+            if (confirm('确认要删除该链接吗')) {
+                delAjax(a_id, obj);// 执行删除操作
+            }
+            function delAjax(id, obj) {
+                $.ajax({
+                    type: 'GET',
+                    url: 'delete?id=' + a_id,
+                    dataType: 'json',
+                    success: function (data) {
+                        obj.remove();
+                        layer.msg('删除成功!', {icon: 1, time: 2000});
+//                        $('#'+f_id).remove();
+//                        window.location.reload(true);
+//                        console.log(data);
+                    },
+                    error: function (XmlHttpRequest, textStatus, errorThrown) {
+                        layer.msg('删除失败!', {icon: 5, time: 2000});
+                    }
+                });
+            }
+
+        });
+    });
+
+</script>
+</body>
+</html>

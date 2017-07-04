@@ -1,0 +1,127 @@
+<!DOCTYPE HTML>
+<html lang="cn">
+<head>
+    <meta charset="utf-8">
+    <meta name="renderer" content="webkit|ie-comp|ie-stand">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport"
+          content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no"/>
+    <meta http-equiv="Cache-Control" content="no-siteapp"/>
+    <!-- <link rel="Bookmark" href="/favicon.ico" > -->
+    <!-- <link rel="Shortcut Icon" href="/favicon.ico" /> -->
+    <!--[if lt IE 9]>
+    <script type="text/javascript" src="lib/html5shiv.js"></script>
+    <script type="text/javascript" src="lib/respond.min.js"></script>
+    <![endif]-->
+    <!-- Bootstrap core CSS -->
+    <link href="/static/zwb/admin/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui/css/H-ui.min.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui.admin/css/H-ui.admin.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/1.0.8/iconfont.css"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui.admin/skin/default/skin.css" id="skin"/>
+    <link rel="stylesheet" type="text/css" href="/static/zwb/admin/h-ui.admin/css/style.css"/>
+    <!--[if IE 6]>
+    <script type="text/javascript" src="lib/DD_belatedPNG_0.0.8a-min.js"></script>
+    <script>DD_belatedPNG.fix('*');</script>
+    <![endif]-->
+    <title>分类列表</title>
+</head>
+<body>
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页 <span class="c-gray en">&gt;</span> 分类管理 <span
+        class="c-gray en">&gt;</span> 分类列表 <a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px"
+                                              href="javascript:location.replace(location.href);" title="刷新"><i
+        class="Hui-iconfont">&#xe68f;</i></a></nav>
+<div class="page-container">
+    <div class="cl pd-5 bg-1 bk-gray mt-20">
+        <h2 class="Hui-iconfont"><i>&#xe64b;</i> 分类列表</h2>
+        <hr>
+    </div>
+    <table class="table table-border table-bordered table-bg">
+        <thead>
+        <tr>
+            <!--<th scope="col" colspan="9">分类列表</th>-->
+        </tr>
+        <tr class="text-c">
+            <th>ID</th>
+            <th>栏目名称</th>
+            <th>Pid</th>
+            <th>Display</th>
+            <th>Hot</th>
+            <th>操作</th>
+        </tr>
+        </thead>
+        <tbody>
+        {if !empty($result)}
+        {volist name='result' id='v'}
+        <tr class="text-c">
+            <td>{$v['cid']}</td>
+            <td>{$v['cname']}</td>
+            <td>{$v['pid']}</td>
+            <td>
+                <a href="{:url('admin/column/dstop?id='.$v['cid'])}">{$v['display'] == 1?'显示':'隐藏';}</a>
+            </td>
+            <td><a href="{:url('admin/column/hstop?id='.$v['cid'])}">{$v['hot'] == 1?'热门':'非热门';}</a></td>
+            <td>
+
+                <a href="{:url('admin/column/edit?id='.$v['cid'])}">编辑</a>
+                <a href="{:url('admin/column/index2?id='.$v['cid'])}">查看子类</a>
+                <a href="{:url('admin/column/adds?id='.$v['cid'])}">添加子分类</a>
+                <a href="{:url('admin/column/delete?id='.$v['cid'])}" class="btn btn-danger btn-xs del-btn">删除</a>
+
+            </td>
+        </tr>
+        {/volist}
+        {else}
+        <tr class="text-c" colspan="7">暂无数据....</tr>
+        {/if}
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation">
+        {$page}
+    </nav>
+
+</div>
+<!--_footer 作为公共模版分离出去-->
+<script type="text/javascript" src="/static/zwb/admin/jquery/1.9.1/jquery.min.js"></script>
+<script type="text/javascript" src="/static/zwb/admin/layer/2.4/layer.js"></script>
+<!--<script type="text/javascript" src="/static/zwb/admin/h-ui/js/H-ui.min.js"></script>-->
+<!--<script type="text/javascript" src="/static/zwb/admin/h-ui.admin/js/H-ui.admin.js"></script> &lt;!&ndash;/_footer 作为公共模版分离出去&ndash;&gt;-->
+
+<script src="/static/zwb/admin/js/jquery.min.js"></script>
+<script src="/static/zwb/admin/js/bootstrap.min.js"></script>
+<script src="/static/zwb/admin/js/toastr.min.js"></script>
+
+<script >
+//    $(function(){
+//
+//        $('.del-btn').click(function() {
+//            if (confirm('确认要删除该类吗?')) {
+//                var a_id = $(this).attr('data-id');
+//                var obj = $(this).parent('tr');
+//                delajax(a_id, obj);
+//            }
+//
+//            function delajax(id, obj) {
+//                $.ajax({
+//                    type: 'get',
+//                    url: 'delete?id=' + a_id,
+//                    dataType: 'json',
+//                    success: function (data) {
+//                        obj.remove();
+//                        layer.msg('删除成功!', {icon: 1, time: 2000});
+////                        $('#'+f_id).remove();
+////                        window.location.reload(true);
+//
+//                    },
+//                    error: function (XmlHttpRequest, textStatus, errorThrown) {
+//                        layer.msg('删除失败!', {icon: 5, time: 2000});
+//                    }
+//                });
+//            }
+//        });
+//    });
+
+</script>
+
+</body>
+</html>
